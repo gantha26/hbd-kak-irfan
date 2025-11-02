@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Selamat Ulang Tahun — Kak Irfan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;800&family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --primary: #ffb6c1;
+      --secondary: #6a11cb;
+      --tertiary: #2575fc;
+      --accent: #f5b642;
+      --card-bg: rgba(255,255,255,0.12);
+      --glass: rgba(255,255,255,0.06);
+    }
+
+    *{box-sizing:border-box; margin:0; padding:0;}
+    body{
+      height:100vh;
+      background: radial-gradient(circle at top left, var(--secondary), var(--tertiary));
+      font-family: 'Poppins', sans-serif;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+
+    .container{
+      position:relative;
+      width:90%;
+      max-width:900px;
+      text-align:center;
+      background: var(--card-bg);
+      border-radius:30px;
+      padding:40px 30px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.4);
+      backdrop-filter: blur(12px);
+    }
+
+    h1{
+      font-family:'Playfair Display', serif;
+      font-size:clamp(32px,6vw,56px);
+      color: #fff;
+      text-shadow:0 5px 25px rgba(0,0,0,0.3);
+      margin-bottom:10px;
+    }
+
+    h2{
+      font-size:clamp(20px,3vw,28px);
+      color:var(--primary);
+      margin-bottom:25px;
+      text-shadow:0 0 15px rgba(255,255,255,0.3);
+    }
+
+    .emoji{
+      font-size:70px;
+      animation: float 2s ease-in-out infinite;
+    }
+
+    @keyframes float{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-12px)}
+    }
+
+    .btn{
+      background:linear-gradient(135deg,var(--secondary),var(--tertiary));
+      border:none;
+      color:#fff;
+      padding:12px 22px;
+      border-radius:50px;
+      margin:8px;
+      cursor:pointer;
+      font-weight:600;
+      transition:0.3s;
+    }
+
+    .btn:hover{
+      transform:scale(1.05);
+      box-shadow:0 0 20px rgba(255,255,255,0.4);
+    }
+
+    .heart, .confetti{
+      position:absolute;
+      opacity:0;
+    }
+
+    .heart{
+      font-size:24px;
+      animation:heartFloat 6s linear forwards;
+    }
+
+    @keyframes heartFloat{
+      0%{opacity:1; transform:translateY(0) scale(1)}
+      100%{opacity:0; transform:translateY(-120vh) rotate(20deg) scale(1.2)}
+    }
+
+    .confetti{
+      width:10px;
+      height:16px;
+      border-radius:3px;
+      animation:confettiFall 5s linear forwards;
+    }
+
+    @keyframes confettiFall{
+      0%{opacity:1; transform:translateY(-10vh) rotate(0deg)}
+      100%{opacity:1; transform:translateY(120vh) rotate(720deg)}
+    }
+
+    footer{
+      margin-top:20px;
+      font-size:14px;
+      opacity:0.9;
+    }
+
+    .signature{
+      margin-top:8px;
+      font-weight:700;
+      color:var(--accent);
+      font-style:italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="emoji">🎂</div>
+    <h1>Selamat Ulang Tahun</h1>
+    <h2>Kak Irfan 🎉</h2>
+    <p>Semoga panjang umur, sehat selalu, dan rezekinya melimpah penuh kebahagiaan! 💖</p>
+
+    <div style="margin-top:25px;">
+      <button class="btn" id="btnHeart">💖 Hati</button>
+      <button class="btn" id="btnConfetti">🎊 Confetti</button>
+      <button class="btn" id="btnAuto">✨ Auto</button>
+      <button class="btn" id="btnStop">🛑 Stop</button>
+    </div>
+
+    <footer>
+      <p>Ucapan spesial dari sahabatmu</p>
+      <div class="signature">— Gantha</div>
+    </footer>
+
+    <div id="animationLayer"></div>
+  </div>
+
+  <script>
+    const layer = document.getElementById('animationLayer');
+    let autoInterval;
+
+    function heart(){
+      const el = document.createElement('div');
+      el.className='heart';
+      el.textContent='💖';
+      el.style.left=Math.random()*100+'%';
+      el.style.fontSize=(20+Math.random()*20)+'px';
+      el.style.animationDuration=(4+Math.random()*2)+'s';
+      layer.appendChild(el);
+      setTimeout(()=>el.remove(),7000);
+    }
+
+    function confetti(){
+      const el=document.createElement('div');
+      el.className='confetti';
+      el.style.left=Math.random()*100+'%';
+      el.style.background=`hsl(${Math.random()*360},80%,60%)`;
+      el.style.animationDuration=(3+Math.random()*2)+'s';
+      layer.appendChild(el);
+      setTimeout(()=>el.remove(),7000);
+    }
+
+    document.getElementById('btnHeart').addEventListener('click',()=>{
+      for(let i=0;i<15;i++) heart();
+    });
+
+    document.getElementById('btnConfetti').addEventListener('click',()=>{
+      for(let i=0;i<25;i++) confetti();
+    });
+
+    document.getElementById('btnAuto').addEventListener('click',()=>{
+      if(autoInterval) return;
+      autoInterval=setInterval(()=>{
+        Math.random()<0.5?heart():confetti();
+      },500);
+    });
+
+    document.getElementById('btnStop').addEventListener('click',()=>{
+      clearInterval(autoInterval);
+      autoInterval=null;
+    });
+
+    setTimeout(()=>{
+      for(let i=0;i<10;i++) heart();
+      for(let i=0;i<15;i++) confetti();
+    },800);
+  </script>
+</body>
+</html>
